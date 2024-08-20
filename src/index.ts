@@ -28,6 +28,9 @@ app.use(morgan('dev'));
 app.use(`${baseUrl}/auth`, authRoute);
 app.use(`${baseUrl}/verify`, verifyRoute);
 app.use(`${baseUrl}/user`, userRoute);
+app.use(`/`, (req, res, next) => {
+  return res.json({ message: 'Hello world' });
+});
 
 // error handler
 app.use((err: HttpError, req: Request, res: Response, next: NextFunction) => {
