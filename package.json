@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start": "node ./dist/server.js",
-    "start-dev": "env-cmd -f dev.env nodemon ./dist/server.js",
+    "start": "node ./dist/index.js",
+    "start-dev": "env-cmd -f dev.env nodemon ./dist/index.js",
     "drizzle-push-dev": "env-cmd -f dev.env npx drizzle-kit push",
     "drizzle-push": "npx drizzle-kit push",
     "watch-tsc": "rimraf ./dist && npx tsc -w",

@@ -16,7 +16,7 @@ import { db } from '../config/db.config';
 import { otps, users } from '../schemas/schemas';
 
 // types
-import { HttpError, LoginBody, RegisterBody, VerifyOtpBody } from '../types';
+import { HttpError, LoginBody, RegisterBody, ResetPassBody, VerifyOtpBody } from '../types';
 import { AuthRequest } from '../middleware/is-auth';
 
 export const registerHandler = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
@@ -291,6 +291,7 @@ export const loginHandler = asyncHandler(async (req: Request, res: Response, nex
   const token = jwt.sign(
     {
       id: userDetails[0].id,
+      otpVerification: true,
     },
     process.env.SECRET_KEY as string,
     {
@@ -299,4 +300,20 @@ export const loginHandler = asyncHandler(async (req: Request, res: Response, nex
   );
 
   return res.status(200).json({ message: 'login done successfully.', token: token });
+});
+
+export const resetPassword = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+  const authReq = req as AuthRequest;
+  const resetPassBody: ResetPassBody = authReq.body;
+
+  const hashedPass = await bcrypt.hash(resetPassBody.updatedPassword, 12);
+
+  // update the current user's password with the new password
+  const updateUsers = await db.update(users).set({ password: hashedPass }).where(eq(users.id, authReq.id));
+
+  if (updateUsers.rowCount === 0) {
+    return errorNext({ httpStatusCode: 400, message: 'Something went wrong while updating your password', next });
+  }
+
+  return res.status(200).json({ message: 'Your password is now updated successfully.' });
 });

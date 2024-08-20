@@ -23,6 +23,7 @@ export type Message = {
 // jwt decoded payload
 export type DecodedPayload = {
   id: number;
+  otpVerification: boolean;
 };
 
 // body types
@@ -41,4 +42,9 @@ export type LoginBody = {
 
 export type VerifyOtpBody = {
   otpCode: string;
+};
+
+export type ResetPassBody = {
+  currentPassword: string;
+  updatedPassword: string;
 };

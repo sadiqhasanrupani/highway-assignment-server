@@ -12,7 +12,7 @@ export type AuthRequest = {
   otpVerification: boolean;
 } & Request;
 
-export const isAuth = asyncHandler(async (req: AuthRequest | Request, res: Response, next: NextFunction) => {
+export const isVerifyAuth = asyncHandler(async (req: AuthRequest | Request, res: Response, next: NextFunction) => {
   const authToken = req.get('Authorization') as string;
   const unauthorizedStatus = 401;
 
@@ -47,8 +47,8 @@ export const isAuth = asyncHandler(async (req: AuthRequest | Request, res: Respo
 
     const decodedToken = decodeToken as DecodedPayload;
 
-    if (!decodedToken.otpVerification) {
-      return errorNext({ httpStatusCode: 401, message: 'Current user is not verified.', next });
+    if (decodedToken.otpVerification) {
+      return errorNext({ httpStatusCode: 401, message: 'Current user is already verified.', next });
     }
 
     const authRequest = req as AuthRequest;
