@@ -8,8 +8,8 @@
     "drizzle-push-dev": "env-cmd -f dev.env npx drizzle-kit push",
     "drizzle-push": "npx drizzle-kit push",
     "watch-tsc": "rimraf ./dist && npx tsc -w",
-    "prebuild": "npm install ",
-    "build": "npx tsc"
+    "prebuild": "npm install",
+    "build": "npx tsc && cp -r ./dist public"
   },
   "keywords": [],
   "author": "",
