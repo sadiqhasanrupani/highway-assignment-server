@@ -1,6 +1,7 @@
 /dist
 /drizzle
 /node_modules
+/public
 
 *.env
 .vercel
